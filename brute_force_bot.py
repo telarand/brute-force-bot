@@ -66,7 +66,7 @@ class BruteForceProcess:
             
             if self.test_password(password):
                 elapsed = time.time() - self.start_time
-                msg = f"Пароль найден для {TARGET_USER}: {password}\nВремя: {elapsed:.1f}с\nПопыток: {self.attempts}\nПотоков: {self.threads}"
+                msg = f"Password found for {TARGET_USER}: {password}\nTime: {elapsed:.1f}с\nAttempts: {self.attempts}\nThreads: {self.threads}"
                 bot.send_message(chat_id, msg)
                 break
     
@@ -94,14 +94,14 @@ class BruteForceProcess:
                     last_attempts = current_attempts
                     
                     if current_attempts % 500 == 0:
-                        stats = f"Попыток: {current_attempts}\nСкорость: {speed:.1f} pass/сек\nПотоков: {self.threads}\nТекущий: {self.current_password}"
+                        stats = f"Attempts: {current_attempts}\nSpeed: {speed:.1f} pass/sec\nThreads: {self.threads}\nCurrent: {self.current_password}"
                         bot.send_message(chat_id, stats)
             
             if not self.found and not stop_event.is_set():
-                bot.send_message(chat_id, f"Пароль для {TARGET_USER} не найден")
+                bot.send_message(chat_id, f"Password for {TARGET_USER} not found")
                 
         except Exception as e:
-            bot.send_message(chat_id, f"Ошибка: {str(e)}")
+            bot.send_message(chat_id, f"Error: {str(e)}")
         finally:
             self.running = False
 
@@ -109,7 +109,7 @@ class BruteForceProcess:
 def start_brute(message):
     global current_process, current_speed
     if current_process and current_process.running:
-        bot.send_message(message.chat.id, "Процесс уже запущен")
+        bot.send_message(message.chat.id, "The process has already started")
         return
     
     try:
@@ -126,10 +126,10 @@ def start_brute(message):
         thread = threading.Thread(target=current_process.run, args=(message.chat.id,))
         thread.start()
         
-        bot.send_message(message.chat.id, f"Запущен перебор для {TARGET_USER}\nМакс. длина: {max_length}\nПотоков: {threads}")
+        bot.send_message(message.chat.id, f"Brute force started for {TARGET_USER}\nMax length: {max_length}\nThreads: {threads}")
         
     except (IndexError, ValueError):
-        bot.send_message(message.chat.id, "Использование: /start <макс_длина> [начальная_комбинация] [количество_потоков]")
+        bot.send_message(message.chat.id, "Usage: /start <max_length> [start_combination] [number_of_threads]")
 
 @bot.message_handler(commands=['speed'])
 def set_speed(message):
@@ -138,17 +138,17 @@ def set_speed(message):
         new_speed = int(message.text.split()[1])
         new_speed = max(1, min(new_speed, MAX_THREADS))
         current_speed = new_speed
-        bot.send_message(message.chat.id, f"Скорость установлена: {current_speed} потоков")
+        bot.send_message(message.chat.id, f"Speed ​​set: {current_speed} threads")
     except (IndexError, ValueError):
-        bot.send_message(message.chat.id, f"Использование: /speed <количество_потоков>\nТекущая скорость: {current_speed}\nМаксимум: {MAX_THREADS}")
+        bot.send_message(message.chat.id, f"Usage: /speed <number_threads>\nCurrent speed: {current_speed}\nMaximum: {MAX_THREADS}")
 
 @bot.message_handler(commands=['stop'])
 def stop_brute(message):
     stop_event.set()
     if current_process:
-        bot.send_message(message.chat.id, f"Остановка процесса...\nПоследний проверенный: {current_process.current_password}\nПотоков: {current_process.threads}")
+        bot.send_message(message.chat.id, f"Stopping process...\nLast checked: {current_process.current_password}\nThreads: {current_process.threads}")
     else:
-        bot.send_message(message.chat.id, "Активных процессов нет")
+        bot.send_message(message.chat.id, "There are no active processes")
 
 @bot.message_handler(commands=['status'])
 def status(message):
@@ -158,10 +158,10 @@ def status(message):
             attempts = current_process.attempts
             current_pass = current_process.current_password
         speed = attempts / elapsed if elapsed > 0 else 0
-        stats = f"Статус: Запущен\nПопыток: {attempts}\nТекущий: {current_pass}\nВремя: {elapsed:.1f}с\nСкорость: {speed:.1f} pass/сек\nПотоков: {current_process.threads}\nЦель: {TARGET_USER}"
+        stats = f"Status: Running\nAttempts: {attempts}\nCurrent: {current_pass}\nTime: {elapsed: .1f}s\nSpeed: {speed: .1f} pass/sec\nThreads: {current_process.threads}\nTarget: {TARGET_USER}"
         bot.send_message(message.chat.id, stats)
     else:
-        bot.send_message(message.chat.id, "Активных процессов нет")
+        bot.send_message(message.chat.id, "There are no active processes")
 
 @bot.message_handler(commands=['stats'])
 def show_stats(message):
@@ -172,10 +172,10 @@ def show_stats(message):
             current_pass = current_process.current_password
             found = current_process.found
         speed = attempts / elapsed if elapsed > 0 else 0
-        stats = f"Статистика:\nВсего попыток: {attempts}\nПрошедшее время: {elapsed:.1f}с\nСкорость: {speed:.1f} pass/сек\nНайден: {found}\nПоследний: {current_pass}\nПотоков: {current_process.threads}\nЦель: {TARGET_USER}"
+        stats = f"Statistics:\nTotal Attempts: {attempts}\nElapsed Time: {elapsed:.1f}s\nSpeed: {speed:.1f} pass/sec\nFound: {found}\nLast: {current_pass}\nThreads: {current_process.threads}\nTarget: {TARGET_USER}"
         bot.send_message(message.chat.id, stats)
     else:
-        bot.send_message(message.chat.id, "Статистика недоступна")
+        bot.send_message(message.chat.id, "Statistics not available")
 
 @bot.message_handler(commands=['max_threads'])
 def set_max_threads(message):
@@ -183,9 +183,9 @@ def set_max_threads(message):
     try:
         new_max = int(message.text.split()[1])
         MAX_THREADS = max(1, new_max)
-        bot.send_message(message.chat.id, f"Максимальное количество потоков установлено: {MAX_THREADS}")
+        bot.send_message(message.chat.id, f"The maximum number of threads is set to: {MAX_THREADS}")
     except (IndexError, ValueError):
-        bot.send_message(message.chat.id, f"Использование: /max_threads <макс_потоков>\nТекущий максимум: {MAX_THREADS}")
+        bot.send_message(message.chat.id, f"Usage: /max_threads <max_threads>\nCurrent maximum: {MAX_THREADS}")
 
 if __name__ == "__main__":
     bot.polling(none_stop=True)
