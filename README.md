@@ -50,7 +50,6 @@ pip install pyTelegramBotAPI
 
 - Python 3.6+
 - Linux (требуется команда `su`)
-- Соответствующие права доступа
 
 ## Важно
 
