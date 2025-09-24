@@ -1,59 +1,59 @@
 # Telegram Brute Force Bot
 
-Бот для Telegram, который выполняет brute force атаку на пароль пользователя системы через команды Telegram.
+A Telegram bot that performs a brute force attack on a system user's password via Telegram commands.
 
-## ⚠️ Предупреждение
+## ⚠️ Warning
 
-**ТОЛЬКО для образовательных целей и тестирования на собственных системах.** Использование для несанкционированного доступа незаконно.
+**For educational purposes and testing on your own systems ONLY.** Use for unauthorized access is illegal.
 
-## Описание
+## Description
 
-Бот позволяет удаленно управлять процессом подбора паролей через Telegram. Использует многопоточность для ускорения процесса.
+The bot allows remote control of password guessing via Telegram. It uses multithreading to speed up the process.
 
-## Установка
+## Installation
 
-1. Установите зависимости:
+1. Install dependencies:
 ```bash
 pip install pyTelegramBotAPI
 ```
-2. Настройте бота:
-- Создайте бота через @BotFather
-- Замените `BOT_TOKEN = 'Your-API-key'` на ваш токен в коде
-- Измените `TARGET_USER = "admin"` на нужного пользователя
-## Использование
+2. Set up the bot:
+- Create a bot via @BotFather
+- Replace `BOT_TOKEN = 'Your-API-key'` with your token in the code
+- Change `TARGET_USER = "admin"` to the desired user
+## Usage
 
-### Команды бота:
+### Bot commands:
 
-**/start <макс_длина> [начальная_комбинация] [количество_потоков]** - Запуск brute force
-- Пример: `/start 5`
-- Пример: `/start 6 abc 50`
+**/start <max_length> [initial_combination] [number_of_threads]** - Launch brute force
+- Example: `/start 5`
+- Example: `/start 6 abc 50`
 
-**/speed <количество_потоков>** - Изменить количество потоков
-- Пример: `/speed 100`
+**/speed <number_of_threads>** - Change the number of threads
+- Example: `/speed 100`
 
-**/stop** - Остановить процесс
+**/stop** - Stop the process
 
-**/status** - Текущий статус
+**/status** - Current status
 
-**/stats** - Подробная статистика
+**/stats** - Detailed statistics
 
-**/max_threads <макс_потоков>** - Установить максимум потоков
+**/max_threads <max_threads>** - Set maximum threads
 
-## Технические детали
+## Technical Details
 
-- **Целевой пользователь**: По умолчанию "admin"
-- **Набор символов**: Буквы, цифры, специальные символы
-- **Максимум потоков**: 200
-- **Метод проверки**: Команда `su`
+- **Target User**: Default: "admin"
+- **Character Set**: Letters, numbers, special characters
+- **Maximum Threads**: 200
+- **Verification Method**: `su` command
 
-## Требования
+## Requirements
 
 - Python 3.6+
-- Linux (требуется команда `su`)
+- Linux (requires the `su` command)
 
-## Важно
+## Important
 
-1. Используйте только с разрешения
-2. Большое количество потоков может нагрузть систему
-3. Токен бота должен храниться в секрете
-4. Активность легко обнаруживается
+1. Use only with permission
+2. A large number of threads may overload the system
+3. The bot token must be kept secret
+4. Activity is easily detectable
