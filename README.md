@@ -18,7 +18,7 @@ pip install pyTelegramBotAPI
 ```
 2. Настройте бота:
 - Создайте бота через @BotFather
-- Замените `BOT_TOKEN = ''` на ваш токен в коде
+- Замените `BOT_TOKEN = 'Your-API-key'` на ваш токен в коде
 - Измените `TARGET_USER = "admin"` на нужного пользователя
 ## Использование
 
